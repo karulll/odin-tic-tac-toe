@@ -1,0 +1,155 @@
+* {
+	box-sizing: border-box;
+	font-family: "JetBrains Mono", monospace;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 100svh;
+	width: 100%;
+	margin: 0;
+	background-color: white;
+	color: black;
+}
+
+.game-container {
+	text-align: center;
+	border: 3px solid black;
+	background: white;
+	box-shadow: 8px 8px 0px black;
+	overflow: hidden;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+
+.cmd-bar {
+	background-color: black;
+	color: white;
+	padding: 0.5rem 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: bold;
+	font-size: 1.1rem;
+}
+
+.cmd-controls {
+	display: flex;
+	font-size: 1.2rem;
+	height: 1.75rem;
+}
+
+.cmd-controls button {
+	color: white;
+	background-color: black;
+	cursor: pointer;
+	border: 0;
+	font-size: 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.75rem;
+}
+
+.cmd-controls button:hover {
+	color: black;
+	background-color: white;
+}
+
+#maximize {
+	padding-bottom: 0.295rem;
+}
+
+#minimize {
+	padding-bottom: 0.95rem;
+}
+
+#close {
+	font-size: 1.5rem;
+}
+
+.board {
+	display: grid;
+	grid-template-columns: repeat(3, 120px);
+	grid-template-rows: repeat(3, 120px);
+	margin: 2.5rem;
+	border-top: 3px solid black;
+	border-left: 3px solid black;
+}
+
+.cell {
+	background-color: white;
+	border: none;
+	border-right: 3px solid black;
+	border-bottom: 3px solid black;
+	font-size: 5rem;
+	font-family: "JetBrains Mono", monospace;
+	font-weight: bold;
+	color: black;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+}
+
+.cell:hover {
+	background-color: black;
+	color: white;
+}
+
+.game-info {
+	padding: 1.25rem;
+	border-top: 3px solid black;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.9375rem;
+}
+
+.status {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin: 0;
+}
+
+#restart-btn {
+	background: white;
+	color: black;
+	border: 3px solid black;
+	padding: 0.625rem 1.25rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	cursor: pointer;
+	text-transform: uppercase;
+	box-shadow: 3px 3px 0px black;
+}
+
+#restart-btn:hover {
+	background: black;
+	color: white;
+	box-shadow: 0px 0px 0px black;
+	transform: translate(3px, 3px);
+}
+
+footer {
+	width: min(400px, 100%);
+	text-align: center;
+}
+
+footer a {
+	color: black;
+	font-weight: 900;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+footer a:hover {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 5px;
+}
