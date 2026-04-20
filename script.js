@@ -56,4 +56,52 @@ function Cell() {
 
 	return { addValue, getValue };
 }
+
+// now assuming we have every method to be able to simulate a real game, we make a controller for the game
+function gameController(playerOne = "Player X", playerTwo = "Player O") {
+	// first we need to define our players and their values
+	const players = [
+		{
+			name: playerOne,
+			value: 1,
+		},
+		{
+			name: playerTwo,
+			value: 2,
+		},
+	];
+
+	// define a variable for the game board to get access to its methods
+	const board = gameBoard();
+
+	// have a method to get the current active player
+	let activePlayer = players[0];
+
+	const getActivePlayer = () => activePlayer;
+
+	// have a method to switch the active player per round
+	const switchActivePlayer = () => {
+		activePlayer = activePlayer === players[0] ? players[1] : players[0];
+	};
+
+	// have a method to print the current round, the positions, active player etc
+	const printRound = () => {
+		board.printBoard();
+		console.log(`${getActivePlayer().name}'s turn.`);
+	};
+	// have a method to play the round
+	const playRound = (row, col) => {
+		if (board.setPlayerValue(row, col, getActivePlayer().value)) {
+			switchActivePlayer();
+			printRound();
+		} else {
+			console.log("Invalid move");
+			printRound();
+		}
+	};
+
+	printRound();
+
+	return { playRound, getActivePlayer };
+}
 // have a method to check the current state of the board and determine if a player has a winning pattern respective of their values
