@@ -38,7 +38,15 @@ function GameBoard() {
 		console.table(currentBoard);
 	};
 
-	return { getBoard, setPlayerValue, printBoard };
+	const resetBoard = () => {
+		for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < cols; j++) {
+				board[i][j].addValue(0);
+			}
+		}
+	};
+
+	return { getBoard, setPlayerValue, printBoard, resetBoard };
 }
 
 // I need a constructor for the cells, return methods: get the value inside the cell and add the value to the cell, figure it out later
@@ -144,20 +152,26 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		if (board.setPlayerValue(row, col, getActivePlayer().value)) {
 			if (checkWin()) {
 				printRound(true);
-				return;
+				return true;
 			}
 
 			switchActivePlayer();
 			printRound(false);
+			return false;
 		} else {
 			console.log("Invalid move");
 			printRound();
 		}
 	};
 
+	const restartGame = () => {
+		board.resetBoard();
+		activePlayer = players[0];
+	};
+
 	printRound();
 
-	return { playRound, getActivePlayer, getBoard: board.getBoard };
+	return { playRound, getActivePlayer, getBoard: board.getBoard, restartGame };
 }
 
 // have a method to display the game into the dom and accept inputs from it
@@ -166,15 +180,22 @@ function ScreenController() {
 	const game = GameController();
 	const playerTurnText = document.querySelector(".status");
 	const boardDiv = document.querySelector(".board");
+	const restartBtn = document.querySelector("#restart-btn");
 
-	const updateScreen = () => {
+	const updateScreen = (winner) => {
 		boardDiv.textContent = "";
 
 		const board = game.getBoard();
 		const activePlayer = game.getActivePlayer();
 		const symbols = ["", "X", "O"];
 
-		playerTurnText.textContent = `${activePlayer.name}'s turn.`;
+		playerTurnText.textContent = winner;
+		if (winner) {
+			playerTurnText.textContent = `${activePlayer.name} won!`;
+			boardDiv.removeEventListener("click", clickHandlerBoard);
+		} else {
+			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
+		}
 
 		board.forEach((row, i) => {
 			row.forEach((cell, j) => {
@@ -196,11 +217,17 @@ function ScreenController() {
 
 		if (!selectedColumn || !selectedRow) return;
 
-		game.playRound(selectedRow, selectedColumn);
+		updateScreen(game.playRound(selectedRow, selectedColumn));
+	}
+
+	function clickHandlerRestart(e) {
+		game.restartGame();
+		boardDiv.addEventListener("click", clickHandlerBoard);
 		updateScreen();
 	}
 
 	boardDiv.addEventListener("click", clickHandlerBoard);
+	restartBtn.addEventListener("click", clickHandlerRestart);
 	updateScreen();
 }
 
