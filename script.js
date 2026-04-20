@@ -176,12 +176,13 @@ function ScreenController() {
 
 		playerTurnText.textContent = `${activePlayer.name}'s turn.`;
 
-		board.forEach((row) => {
-			row.forEach((cell, i) => {
+		board.forEach((row, i) => {
+			row.forEach((cell, j) => {
 				const cellButton = document.createElement("button");
 				cellButton.classList.add("cell");
 
-				cellButton.dataset.column = i;
+				cellButton.dataset.column = j;
+				cellButton.dataset.row = i;
 
 				cellButton.textContent = symbols[cell.getValue()];
 				boardDiv.appendChild(cellButton);
