@@ -205,10 +205,8 @@ function ScreenController() {
 
 		if (winner === true) {
 			playerTurnText.textContent = `${activePlayer.name} won!`;
-			boardDiv.removeEventListener("click", clickHandlerBoard);
 		} else if (winner === "tie") {
 			playerTurnText.textContent = "It's a tie!";
-			boardDiv.removeEventListener("click", clickHandlerBoard);
 		} else {
 			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
 		}
@@ -228,6 +226,12 @@ function ScreenController() {
 	};
 
 	function clickHandlerBoard(e) {
+		if (
+			playerTurnText.textContent.includes("won") ||
+			playerTurnText.textContent.includes("tie")
+		) {
+			return;
+		}
 		const selectedColumn = e.target.dataset.column;
 		const selectedRow = e.target.dataset.row;
 
@@ -238,7 +242,7 @@ function ScreenController() {
 
 	function clickHandlerRestart(e) {
 		game.restartGame();
-		boardDiv.addEventListener("click", clickHandlerBoard);
+
 		updateScreen();
 	}
 
