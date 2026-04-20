@@ -72,10 +72,12 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		{
 			name: playerOne,
 			value: 1,
+			symbol: "X",
 		},
 		{
 			name: playerTwo,
 			value: 2,
+			symbol: "Y",
 		},
 	];
 
@@ -105,7 +107,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 			.getBoard()
 			.map((row) => row.map((cell) => cell.getValue()));
 
-		const playerValue = getActivePlayer().value;
+		const playerValue = getActivePlayer().symbo;
 
 		//  rows
 		for (let i = 0; i < 3; i++) {
@@ -149,7 +151,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 
 	// have a method to play the round
 	const playRound = (row, col) => {
-		if (board.setPlayerValue(row, col, getActivePlayer().value)) {
+		if (board.setPlayerValue(row, col, getActivePlayer().symbol)) {
 			if (checkWin()) {
 				printRound(true);
 				return true;
@@ -187,9 +189,7 @@ function ScreenController() {
 
 		const board = game.getBoard();
 		const activePlayer = game.getActivePlayer();
-		const symbols = ["", "X", "O"];
 
-		playerTurnText.textContent = winner;
 		if (winner) {
 			playerTurnText.textContent = `${activePlayer.name} won!`;
 			boardDiv.removeEventListener("click", clickHandlerBoard);
@@ -205,7 +205,7 @@ function ScreenController() {
 				cellButton.dataset.column = j;
 				cellButton.dataset.row = i;
 
-				cellButton.textContent = symbols[cell.getValue()];
+				cellButton.textContent = cell.getValue() === 0 ? " " : cell.getValue();
 				boardDiv.appendChild(cellButton);
 			});
 		});
