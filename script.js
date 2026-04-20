@@ -1,5 +1,5 @@
 // I need a 3x3 game board
-function gameBoard() {
+function GameBoard() {
 	// -> define the rows and cols and the 2d board array itself
 	const rows = 3;
 	const cols = 3;
@@ -58,7 +58,7 @@ function Cell() {
 }
 
 // now assuming we have every method to be able to simulate a real game, we make a controller for the game
-function gameController(playerOne = "Player X", playerTwo = "Player O") {
+function GameController(playerOne = "Player X", playerTwo = "Player O") {
 	// first we need to define our players and their values
 	const players = [
 		{
@@ -72,7 +72,7 @@ function gameController(playerOne = "Player X", playerTwo = "Player O") {
 	];
 
 	// define a variable for the game board to get access to its methods
-	const board = gameBoard();
+	const board = GameBoard();
 
 	// have a method to get the current active player
 	let activePlayer = players[0];
@@ -91,6 +91,7 @@ function gameController(playerOne = "Player X", playerTwo = "Player O") {
 		else console.log(`${getActivePlayer().name} won!`);
 	};
 
+	// have a method to check the current state of the board and determine if a player has a winning pattern respective of their values
 	const checkWin = () => {
 		const currentBoardValues = board
 			.getBoard()
@@ -156,6 +157,39 @@ function gameController(playerOne = "Player X", playerTwo = "Player O") {
 
 	printRound();
 
-	return { playRound, getActivePlayer };
+	return { playRound, getActivePlayer, getBoard: board.getBoard };
 }
-// have a method to check the current state of the board and determine if a player has a winning pattern respective of their values
+
+// have a method to display the game into the dom and accept inputs from it
+
+function ScreenController() {
+	const game = GameController();
+	const playerTurnText = document.querySelector(".status");
+	const boardDiv = document.querySelector(".board");
+
+	const updateScreen = () => {
+		boardDiv.textContent = "";
+
+		const board = game.getBoard();
+		const activePlayer = game.getActivePlayer();
+		const symbols = ["", "X", "O"];
+
+		playerTurnText.textContent = `${activePlayer.name}'s turn.`;
+
+		board.forEach((row) => {
+			row.forEach((cell, i) => {
+				const cellButton = document.createElement("button");
+				cellButton.classList.add("cell");
+
+				cellButton.dataset.column = i;
+
+				cellButton.textContent = symbols[cell.getValue()];
+				boardDiv.appendChild(cellButton);
+			});
+		});
+	};
+
+	updateScreen();
+}
+
+ScreenController();
