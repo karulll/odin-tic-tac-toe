@@ -85,15 +85,69 @@ function gameController(playerOne = "Player X", playerTwo = "Player O") {
 	};
 
 	// have a method to print the current round, the positions, active player etc
-	const printRound = () => {
+	const printRound = (winner) => {
 		board.printBoard();
-		console.log(`${getActivePlayer().name}'s turn.`);
+		if (!winner) console.log(`${getActivePlayer().name}'s turn.`);
+		else console.log(`${getActivePlayer().name} won!`);
 	};
+
+	const checkWin = () => {
+		const currentBoardValues = board
+			.getBoard()
+			.map((row) => row.map((cell) => cell.getValue()));
+
+		const playerValue = getActivePlayer().value;
+
+		//  rows
+		for (let i = 0; i < 3; i++) {
+			if (
+				currentBoardValues[i][0] === playerValue &&
+				currentBoardValues[i][1] === playerValue &&
+				currentBoardValues[i][2] === playerValue
+			) {
+				return true;
+			}
+		}
+		// columns
+		for (let j = 0; j < 3; j++) {
+			if (
+				currentBoardValues[0][j] === playerValue &&
+				currentBoardValues[1][j] === playerValue &&
+				currentBoardValues[2][j] === playerValue
+			) {
+				return true;
+			}
+		}
+
+		// diagonals
+		if (
+			currentBoardValues[0][0] === playerValue &&
+			currentBoardValues[1][1] === playerValue &&
+			currentBoardValues[2][2] === playerValue
+		) {
+			return true;
+		}
+		if (
+			currentBoardValues[0][2] === playerValue &&
+			currentBoardValues[1][1] === playerValue &&
+			currentBoardValues[2][0] === playerValue
+		) {
+			return true;
+		}
+
+		return false;
+	};
+
 	// have a method to play the round
 	const playRound = (row, col) => {
 		if (board.setPlayerValue(row, col, getActivePlayer().value)) {
+			if (checkWin()) {
+				printRound(true);
+				return;
+			}
+
 			switchActivePlayer();
-			printRound();
+			printRound(false);
 		} else {
 			console.log("Invalid move");
 			printRound();
