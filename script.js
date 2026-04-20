@@ -77,7 +77,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		{
 			name: playerTwo,
 			value: 2,
-			symbol: "Y",
+			symbol: "O",
 		},
 	];
 
@@ -107,7 +107,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 			.getBoard()
 			.map((row) => row.map((cell) => cell.getValue()));
 
-		const playerValue = getActivePlayer().symbo;
+		const playerValue = getActivePlayer().symbol;
 
 		//  rows
 		for (let i = 0; i < 3; i++) {
@@ -149,12 +149,25 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		return false;
 	};
 
+	const checkTie = () => {
+		const currentBoardValues = board
+			.getBoard()
+			.map((row) => row.map((cell) => cell.getValue()));
+
+		return !currentBoardValues.flat().includes(0);
+	};
+
 	// have a method to play the round
 	const playRound = (row, col) => {
 		if (board.setPlayerValue(row, col, getActivePlayer().symbol)) {
 			if (checkWin()) {
 				printRound(true);
 				return true;
+			}
+
+			if (checkTie()) {
+				console.log("It's a tie.");
+				return "tie";
 			}
 
 			switchActivePlayer();
@@ -190,8 +203,11 @@ function ScreenController() {
 		const board = game.getBoard();
 		const activePlayer = game.getActivePlayer();
 
-		if (winner) {
+		if (winner === true) {
 			playerTurnText.textContent = `${activePlayer.name} won!`;
+			boardDiv.removeEventListener("click", clickHandlerBoard);
+		} else if (winner === "tie") {
+			playerTurnText.textContent = "It's a tie!";
 			boardDiv.removeEventListener("click", clickHandlerBoard);
 		} else {
 			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
