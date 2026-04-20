@@ -9,7 +9,6 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	height: 100svh;
 	margin: 0;
 	background-color: white;
 	color: black;
@@ -33,6 +32,18 @@ body {
 	align-items: center;
 	font-weight: bold;
 	font-size: 0.85rem;
+}
+
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cmd-icon {
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
 }
 
 .cmd-controls {
