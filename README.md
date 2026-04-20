@@ -12,3 +12,20 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
 
 - stop destroying the dom. right now, every time a player clicks a square, i completely wipe the div and recreate all 9 buttons from scratch. works for this, but know i should probably build the buttons once and just update their text layer.
 - dont rely on other people's source code so much when trying to learn
+
+### to do's to make sure i actually learned something
+
+- [ ] **1. state management (fix the core logic first)**
+  - [ ] add a proper `let isGameOver = false` variable inside `GameController` to not use UI text for logic
+  - [ ] update `playRound` to flip `isGameOver = true` when there's a win or tie, and flip it back to `false` in `restartGame`
+  - [ ] make `playRound` return immediately if `isGameOver` is true
+
+- [ ] **2. dom recycling (fix the UI rendering second)**
+  - [ ] move the `document.createElement("button")` loops out of `updateScreen` into a new `initializeBoard()` function that only runs once when the page loads
+  - [ ] change `updateScreen()` so it only loops through the _existing_ DOM `.cell` buttons and updates their `.textContent`
+
+- [ ] **3. dynamic loops & board scaling (the final challenge)**
+  - [ ] replace hardcoded boundary numbers like `i < 3` inside loops with `board.length` or `rows` / `cols` variables (specifically in `checkWin`)
+  - [ ] accept an input `size` variable in `GameBoard(size)` so it can generate any shape `N x N` array instead of forcing a 3x3 array
+  - [ ] update the css `grid-template-columns` dynamically via javascript (`boardDiv.style.gridTemplateColumns`) so the physical size matches the `size` input
+  - [ ] refactor `checkWin` logic so it searches for winning loops dynamically across any board size instead of specifically hardcoding indices `[0]`, `[1]`, and `[2]`
