@@ -1,8 +1,8 @@
 // construction of everything related to the base board
 function GameBoard() {
-	// -> define the rows and cols and the 2d board array itself
-	const rows = 3;
-	const cols = 3;
+	// define the rows and cols and the 2d board grid
+	const rows = 4;
+	const cols = 4;
 	const board = [];
 
 	// create the board, array of objects
@@ -14,11 +14,13 @@ function GameBoard() {
 	}
 
 	const getBoard = () => board;
+	const getBoardRows = () => rows;
+	const getBoardCols = () => cols;
 
 	// method method add a players value to a cell, check if that cell is available first
 	const setPlayerValue = (row, column, player) => {
 		// safeguarding
-		if (row < 0 || row > 2 || column < 0 || column > 2) {
+		if (row < 0 || row > rows || column < 0 || column > cols) {
 			return false;
 		}
 
@@ -40,7 +42,7 @@ function GameBoard() {
 		}
 	};
 
-	return { getBoard, setPlayerValue, resetBoard };
+	return { getBoard, setPlayerValue, resetBoard, getBoardCols, getBoardRows };
 }
 
 // constructor for the individual cells
@@ -75,6 +77,8 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 	];
 
 	const board = GameBoard();
+	const totalRows = board.getBoardRows();
+	const totalCols = board.getBoardCols();
 
 	let activePlayer = players[0];
 	let isGameOver = false;
@@ -97,42 +101,33 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 
 		const playerValue = getActivePlayer().symbol;
 
-		//  rows
-		for (let i = 0; i < 3; i++) {
-			if (
-				currentBoardValues[i][0] === playerValue &&
-				currentBoardValues[i][1] === playerValue &&
-				currentBoardValues[i][2] === playerValue
-			) {
-				isGameOver = true;
-			}
+		// my brain is expanding
+		const isSamePlayer = (currentValue) => currentValue === playerValue;
+
+		// rows
+		for (let i = 0; i < totalRows; i++) {
+			if (currentBoardValues[i].every(isSamePlayer)) isGameOver = true;
 		}
+
 		// columns
-		for (let j = 0; j < 3; j++) {
-			if (
-				currentBoardValues[0][j] === playerValue &&
-				currentBoardValues[1][j] === playerValue &&
-				currentBoardValues[2][j] === playerValue
-			) {
-				isGameOver = true;
-			}
+		for (let j = 0; j < totalCols; j++) {
+			const colWin = currentBoardValues.every((row) => row[j] === playerValue);
+			if (colWin) isGameOver = true;
 		}
 
 		// diagonals
-		if (
-			currentBoardValues[0][0] === playerValue &&
-			currentBoardValues[1][1] === playerValue &&
-			currentBoardValues[2][2] === playerValue
-		) {
-			isGameOver = true;
-		}
-		if (
-			currentBoardValues[0][2] === playerValue &&
-			currentBoardValues[1][1] === playerValue &&
-			currentBoardValues[2][0] === playerValue
-		) {
-			isGameOver = true;
-		}
+		const diagLtoRwin = currentBoardValues.every(
+			(row, index) => row[index] === playerValue,
+		);
+
+		const diagRtoLwin = currentBoardValues.every((row, index, array) => {
+			const reverseIndex = array.length - 1 - index;
+
+			return row[reverseIndex] === playerValue;
+		});
+
+		if (diagLtoRwin || diagRtoLwin) isGameOver = true;
+
 		currentBoardValues.flat().includes(0)
 			? (isGameTie = false)
 			: (isGameTie = true);
@@ -163,20 +158,27 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		restartGame,
 		getIsGameOver,
 		getIsGameTie,
+		totalRows: board.getBoardRows,
+		totalCols: board.getBoardCols,
 	};
 }
 
-// have a method to display the game into the dom and accept inputs from it
+// renders and updates the game into the dom and accept inputs
 function ScreenController() {
 	const game = GameController();
 	const playerTurnText = document.querySelector(".status");
 	const boardDiv = document.querySelector(".board");
 	const restartBtn = document.querySelector("#restart-btn");
 	const board = game.getBoard();
+	const totalRows = game.totalRows();
+	const totalCols = game.totalCols();
 
 	// renders the base grid of buttons
 	function initializeBoard() {
 		boardDiv.textContent = "";
+
+		boardDiv.style.gridTemplateColumns = `repeat(${totalCols}, 110px)`;
+		boardDiv.style.gridTemplateRows = `repeat(${totalRows}, 110px)`;
 
 		board.forEach((row, i) => {
 			row.forEach((cell, j) => {
@@ -193,7 +195,7 @@ function ScreenController() {
 	}
 
 	// gets row & col data attributes from the targeted cell
-	// render that cell's dom to reflect internal board values
+	// render that cell's text to reflect internal board values
 	function updateScreen(row, col) {
 		const activePlayer = game.getActivePlayer();
 		const allCells = document.querySelectorAll(".cell");

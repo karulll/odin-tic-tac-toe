@@ -25,7 +25,7 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
   - [x] change `updateScreen()` so it only loops through the _existing_ DOM `.cell` buttons and updates their `.textContent`
 
 - [ ] **3. dynamic loops & board scaling**
-  - [ ] replace hardcoded boundary numbers like `i < 3` inside loops with `board.length` or `rows` / `cols` variables (specifically in `checkWin`)
+  - [x] replace hardcoded boundary numbers like `i < 3` inside loops with `board.length` or `rows` / `cols` variables (specifically in `checkWin`)
   - [ ] accept an input `size` variable in `GameBoard(size)` so it can generate any shape `N x N` array instead of forcing a 3x3 array
   - [ ] update the css `grid-template-columns` dynamically via javascript (`boardDiv.style.gridTemplateColumns`) so the physical size matches the `size` input
   - [ ] refactor `checkWin` logic so it searches for winning loops dynamically across any board size instead of specifically hardcoding indices `[0]`, `[1]`, and `[2]`
