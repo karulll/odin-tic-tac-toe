@@ -20,9 +20,9 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
   - [x] update `playRound` to flip `isGameOver = true` when there's a win or tie, and flip it back to `false` in `restartGame`
   - [x] make `playRound` return if `isGameOver` is true
 
-- [ ] **2. dom recycling**
-  - [ ] move the `document.createElement("button")` loops out of `updateScreen` into a new `initializeBoard()` function that only runs once when the page loads
-  - [ ] change `updateScreen()` so it only loops through the _existing_ DOM `.cell` buttons and updates their `.textContent`
+- [x] **2. dom recycling**
+  - [x] move the `document.createElement("button")` loops out of `updateScreen` into a new `initializeBoard()` function that only runs once when the page loads
+  - [x] change `updateScreen()` so it only loops through the _existing_ DOM `.cell` buttons and updates their `.textContent`
 
 - [ ] **3. dynamic loops & board scaling**
   - [ ] replace hardcoded boundary numbers like `i < 3` inside loops with `board.length` or `rows` / `cols` variables (specifically in `checkWin`)
