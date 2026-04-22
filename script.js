@@ -86,19 +86,15 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 
 	// have a method to get the current active player
 	let activePlayer = players[0];
+	let isGameOver = false;
+	let isGameTie = false;
 
 	const getActivePlayer = () => activePlayer;
-
+	const getIsGameOver = () => isGameOver;
+	const getIsGameTie = () => isGameTie;
 	// have a method to switch the active player per round
 	const switchActivePlayer = () => {
 		activePlayer = activePlayer === players[0] ? players[1] : players[0];
-	};
-
-	// have a method to print the current round, the positions, active player etc
-	const printRound = (winner) => {
-		board.printBoard();
-		if (!winner) console.log(`${getActivePlayer().name}'s turn.`);
-		else console.log(`${getActivePlayer().name} won!`);
 	};
 
 	// have a method to check the current state of the board and determine if a player has a winning pattern respective of their values
@@ -116,7 +112,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 				currentBoardValues[i][1] === playerValue &&
 				currentBoardValues[i][2] === playerValue
 			) {
-				return true;
+				isGameOver = true;
 			}
 		}
 		// columns
@@ -126,7 +122,7 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 				currentBoardValues[1][j] === playerValue &&
 				currentBoardValues[2][j] === playerValue
 			) {
-				return true;
+				isGameOver = true;
 			}
 		}
 
@@ -136,57 +132,43 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 			currentBoardValues[1][1] === playerValue &&
 			currentBoardValues[2][2] === playerValue
 		) {
-			return true;
+			isGameOver = true;
 		}
 		if (
 			currentBoardValues[0][2] === playerValue &&
 			currentBoardValues[1][1] === playerValue &&
 			currentBoardValues[2][0] === playerValue
 		) {
-			return true;
+			isGameOver = true;
 		}
-
-		return false;
+		currentBoardValues.flat().includes(0)
+			? (isGameTie = false)
+			: (isGameTie = true);
 	};
 
-	const checkTie = () => {
-		const currentBoardValues = board
-			.getBoard()
-			.map((row) => row.map((cell) => cell.getValue()));
-
-		return !currentBoardValues.flat().includes(0);
-	};
-
-	// have a method to play the round
 	const playRound = (row, col) => {
 		if (board.setPlayerValue(row, col, getActivePlayer().symbol)) {
-			if (checkWin()) {
-				printRound(true);
-				return true;
-			}
-
-			if (checkTie()) {
-				console.log("It's a tie.");
-				return "tie";
-			}
-
+			checkWin();
+			if (isGameOver || isGameTie) return;
 			switchActivePlayer();
-			printRound(false);
-			return false;
-		} else {
-			console.log("Invalid move");
-			printRound();
 		}
 	};
 
 	const restartGame = () => {
+		isGameOver = false;
+		isGameTie = false;
 		board.resetBoard();
 		activePlayer = players[0];
 	};
 
-	printRound();
-
-	return { playRound, getActivePlayer, getBoard: board.getBoard, restartGame };
+	return {
+		playRound,
+		getActivePlayer,
+		getBoard: board.getBoard,
+		restartGame,
+		getIsGameOver,
+		getIsGameTie,
+	};
 }
 
 // have a method to display the game into the dom and accept inputs from it
@@ -197,15 +179,17 @@ function ScreenController() {
 	const boardDiv = document.querySelector(".board");
 	const restartBtn = document.querySelector("#restart-btn");
 
-	const updateScreen = (winner) => {
+	const updateScreen = () => {
 		boardDiv.textContent = "";
 
 		const board = game.getBoard();
 		const activePlayer = game.getActivePlayer();
+		const isGameOver = game.getIsGameOver();
+		const isGameTie = game.getIsGameTie();
 
-		if (winner === true) {
+		if (isGameOver) {
 			playerTurnText.textContent = `${activePlayer.name} won!`;
-		} else if (winner === "tie") {
+		} else if (isGameTie) {
 			playerTurnText.textContent = "It's a tie!";
 		} else {
 			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
@@ -226,23 +210,19 @@ function ScreenController() {
 	};
 
 	function clickHandlerBoard(e) {
-		if (
-			playerTurnText.textContent.includes("won") ||
-			playerTurnText.textContent.includes("tie")
-		) {
-			return;
-		}
+		if (game.getIsGameOver() || game.getIsGameTie()) return;
+
 		const selectedColumn = e.target.dataset.column;
 		const selectedRow = e.target.dataset.row;
 
 		if (!selectedColumn || !selectedRow) return;
 
-		updateScreen(game.playRound(selectedRow, selectedColumn));
+		game.playRound(selectedRow, selectedColumn);
+		updateScreen();
 	}
 
 	function clickHandlerRestart(e) {
 		game.restartGame();
-
 		updateScreen();
 	}
 
