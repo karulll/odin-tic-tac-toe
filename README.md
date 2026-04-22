@@ -15,10 +15,10 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
 
 ### to do's to make sure i actually learned something
 
-- [ ] **1. state management**
-  - [ ] add a proper `let isGameOver = false` variable inside `GameController` to not use UI text for logic
-  - [ ] update `playRound` to flip `isGameOver = true` when there's a win or tie, and flip it back to `false` in `restartGame`
-  - [ ] make `playRound` return immediately if `isGameOver` is true
+- [x] **1. state management**
+  - [x] add a proper `let isGameOver = false` variable inside `GameController` to not use UI text for logic
+  - [x] update `playRound` to flip `isGameOver = true` when there's a win or tie, and flip it back to `false` in `restartGame`
+  - [x] make `playRound` return if `isGameOver` is true
 
 - [ ] **2. dom recycling**
   - [ ] move the `document.createElement("button")` loops out of `updateScreen` into a new `initializeBoard()` function that only runs once when the page loads
