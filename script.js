@@ -32,12 +32,6 @@ function GameBoard() {
 		}
 	};
 
-	// -> have a method to print the current state of the board
-	const printBoard = () => {
-		const currentBoard = board.map((row) => row.map((cell) => cell.getValue()));
-		console.table(currentBoard);
-	};
-
 	const resetBoard = () => {
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -46,7 +40,7 @@ function GameBoard() {
 		}
 	};
 
-	return { getBoard, setPlayerValue, printBoard, resetBoard };
+	return { getBoard, setPlayerValue, resetBoard };
 }
 
 // I need a constructor for the cells, return methods: get the value inside the cell and add the value to the cell, figure it out later
@@ -178,22 +172,10 @@ function ScreenController() {
 	const playerTurnText = document.querySelector(".status");
 	const boardDiv = document.querySelector(".board");
 	const restartBtn = document.querySelector("#restart-btn");
+	const board = game.getBoard();
 
-	const updateScreen = () => {
+	function initializeBoard() {
 		boardDiv.textContent = "";
-
-		const board = game.getBoard();
-		const activePlayer = game.getActivePlayer();
-		const isGameOver = game.getIsGameOver();
-		const isGameTie = game.getIsGameTie();
-
-		if (isGameOver) {
-			playerTurnText.textContent = `${activePlayer.name} won!`;
-		} else if (isGameTie) {
-			playerTurnText.textContent = "It's a tie!";
-		} else {
-			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
-		}
 
 		board.forEach((row, i) => {
 			row.forEach((cell, j) => {
@@ -207,7 +189,31 @@ function ScreenController() {
 				boardDiv.appendChild(cellButton);
 			});
 		});
-	};
+	}
+
+	function updateScreen(row, col) {
+		const activePlayer = game.getActivePlayer();
+
+		const allCells = document.querySelectorAll(".cell");
+
+		if (row !== undefined && col !== undefined) {
+			const cellButton = document.querySelector(
+				`[data-row="${row}"][data-column="${col}"]`,
+			);
+			cellButton.textContent =
+				board[row][col].getValue() === 0 ? " " : board[row][col].getValue();
+		} else {
+			allCells.forEach((cell) => (cell.textContent = " "));
+		}
+
+		if (game.getIsGameOver()) {
+			playerTurnText.textContent = `${activePlayer.name} won!`;
+		} else if (game.getIsGameTie()) {
+			playerTurnText.textContent = "It's a tie!";
+		} else {
+			playerTurnText.textContent = `${activePlayer.name}'s turn.`;
+		}
+	}
 
 	function clickHandlerBoard(e) {
 		if (game.getIsGameOver() || game.getIsGameTie()) return;
@@ -218,7 +224,7 @@ function ScreenController() {
 		if (!selectedColumn || !selectedRow) return;
 
 		game.playRound(selectedRow, selectedColumn);
-		updateScreen();
+		updateScreen(selectedRow, selectedColumn);
 	}
 
 	function clickHandlerRestart(e) {
@@ -228,6 +234,7 @@ function ScreenController() {
 
 	boardDiv.addEventListener("click", clickHandlerBoard);
 	restartBtn.addEventListener("click", clickHandlerRestart);
+	initializeBoard();
 	updateScreen();
 }
 
