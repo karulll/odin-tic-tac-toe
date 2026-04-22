@@ -24,12 +24,11 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
   - [x] move the `document.createElement("button")` loops out of `updateScreen` into a new `initializeBoard()` function that only runs once when the page loads
   - [x] change `updateScreen()` so it only loops through the _existing_ DOM `.cell` buttons and updates their `.textContent`
 
-- [ ] **3. dynamic loops & board scaling**
+- [x] **3. dynamic loops & board scaling**
   - [x] replace hardcoded boundary numbers like `i < 3` inside loops with `board.length` or `rows` / `cols` variables (specifically in `checkWin`)
-  - [ ] accept an input `size` variable in `GameBoard(size)` so it can generate any shape `N x N` array instead of forcing a 3x3 array
-  - [ ] update the css `grid-template-columns` dynamically via javascript (`boardDiv.style.gridTemplateColumns`) so the physical size matches the `size` input
-  - [ ] refactor `checkWin` logic so it searches for winning loops dynamically across any board size instead of specifically hardcoding indices `[0]`, `[1]`, and `[2]`
+  - [x] update the css `grid-template-columns` dynamically via javascript (`boardDiv.style.gridTemplateColumns`) so the physical size matches the `size` input
+  - [x] refactor `checkWin` logic so it searches for winning loops dynamically across any board size instead of specifically hardcoding indices `[0]`, `[1]`, and `[2]`
 
-- [ ] **4. extras**
-  - [ ] add UI options to let the user select different board sizes before starting a game
+- [ ] **4. finishes**
+  - [ ] add UI options to accept an input `size` variable in `GameBoard(size)` so it can generate any shape `N x N` array instead of forcing a 3x3 array
   - [ ] implement an AI opponent and add a toggle to choose between "Player vs Player" or "Player vs AI"
