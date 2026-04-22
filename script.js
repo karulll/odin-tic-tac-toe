@@ -1,11 +1,11 @@
-// I need a 3x3 game board
+// construction of everything related to the base board
 function GameBoard() {
 	// -> define the rows and cols and the 2d board array itself
 	const rows = 3;
 	const cols = 3;
 	const board = [];
 
-	// -> have a for loop to fill that 2d board using .push method filling it with cells which are objects that contain the player and that players value
+	// create the board, array of objects
 	for (let i = 0; i < rows; i++) {
 		board[i] = [];
 		for (let j = 0; j < cols; j++) {
@@ -13,12 +13,11 @@ function GameBoard() {
 		}
 	}
 
-	// -> have a method to get the current state of the board
 	const getBoard = () => board;
 
-	// -> have a method method add a players value to a cell, check if that cell is available first (3x3 grid)
+	// method method add a players value to a cell, check if that cell is available first
 	const setPlayerValue = (row, column, player) => {
-		// safeguardingS
+		// safeguarding
 		if (row < 0 || row > 2 || column < 0 || column > 2) {
 			return false;
 		}
@@ -32,6 +31,7 @@ function GameBoard() {
 		}
 	};
 
+	// set all cells to empty
 	const resetBoard = () => {
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -43,7 +43,7 @@ function GameBoard() {
 	return { getBoard, setPlayerValue, resetBoard };
 }
 
-// I need a constructor for the cells, return methods: get the value inside the cell and add the value to the cell, figure it out later
+// constructor for the individual cells
 function Cell() {
 	// 0 for nothing in this cell
 	let value = 0;
@@ -59,9 +59,8 @@ function Cell() {
 	return { addValue, getValue };
 }
 
-// now assuming we have every method to be able to simulate a real game, we make a controller for the game
+// control the flow of the game
 function GameController(playerOne = "Player X", playerTwo = "Player O") {
-	// first we need to define our players and their values
 	const players = [
 		{
 			name: playerOne,
@@ -75,10 +74,8 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		},
 	];
 
-	// define a variable for the game board to get access to its methods
 	const board = GameBoard();
 
-	// have a method to get the current active player
 	let activePlayer = players[0];
 	let isGameOver = false;
 	let isGameTie = false;
@@ -86,12 +83,13 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 	const getActivePlayer = () => activePlayer;
 	const getIsGameOver = () => isGameOver;
 	const getIsGameTie = () => isGameTie;
-	// have a method to switch the active player per round
+
 	const switchActivePlayer = () => {
 		activePlayer = activePlayer === players[0] ? players[1] : players[0];
 	};
 
-	// have a method to check the current state of the board and determine if a player has a winning pattern respective of their values
+	// method to check the current state of the board and determine
+	// if a player has a winning pattern respective of their values
 	const checkWin = () => {
 		const currentBoardValues = board
 			.getBoard()
@@ -140,6 +138,9 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 			: (isGameTie = true);
 	};
 
+	// method to play a round
+	// applies active player's symbol at the targeted cell
+	// switches player's turn if game has not ended
 	const playRound = (row, col) => {
 		if (board.setPlayerValue(row, col, getActivePlayer().symbol)) {
 			checkWin();
@@ -166,7 +167,6 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 }
 
 // have a method to display the game into the dom and accept inputs from it
-
 function ScreenController() {
 	const game = GameController();
 	const playerTurnText = document.querySelector(".status");
@@ -174,6 +174,7 @@ function ScreenController() {
 	const restartBtn = document.querySelector("#restart-btn");
 	const board = game.getBoard();
 
+	// renders the base grid of buttons
 	function initializeBoard() {
 		boardDiv.textContent = "";
 
@@ -191,9 +192,10 @@ function ScreenController() {
 		});
 	}
 
+	// gets row & col data attributes from the targeted cell
+	// render that cell's dom to reflect internal board values
 	function updateScreen(row, col) {
 		const activePlayer = game.getActivePlayer();
-
 		const allCells = document.querySelectorAll(".cell");
 
 		if (row !== undefined && col !== undefined) {
@@ -215,6 +217,7 @@ function ScreenController() {
 		}
 	}
 
+	// gets the row & col data from the clicked cell
 	function clickHandlerBoard(e) {
 		if (game.getIsGameOver() || game.getIsGameTie()) return;
 
