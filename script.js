@@ -246,8 +246,20 @@ function ScreenController() {
 function ModalController() {
 	const modal = document.querySelector("#game-modal");
 	const startBtn = document.querySelector("#start-game-btn");
+	const customSizeInput = document.querySelector("#custom-size");
+	const boardSizeRadios = document.querySelectorAll('input[name="board-size"]');
 
 	modal.showModal();
+
+	customSizeInput.addEventListener("focus", () => {
+		boardSizeRadios.forEach((radio) => (radio.checked = false));
+	});
+
+	boardSizeRadios.forEach((radio) => {
+		radio.addEventListener("change", () => {
+			customSizeInput.value = "";
+		});
+	});
 
 	function clickHandlerStart(e) {
 		e.preventDefault();
