@@ -242,8 +242,20 @@ function ScreenController() {
 	initializeBoard();
 	updateScreen();
 }
-const modal = document.querySelector("#game-modal");
-const startBtn = document.querySelector("#start-game-btn");
 
-modal.showModal();
+function ModalController() {
+	const modal = document.querySelector("#game-modal");
+	const startBtn = document.querySelector("#start-game-btn");
+
+	modal.showModal();
+
+	function clickHandlerStart(e) {
+		e.preventDefault();
+		modal.close();
+	}
+
+	startBtn.addEventListener("click", clickHandlerStart);
+}
+
+ModalController();
 ScreenController();
