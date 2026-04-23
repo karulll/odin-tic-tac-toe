@@ -263,6 +263,15 @@ function ModalController() {
 
 	function clickHandlerStart(e) {
 		e.preventDefault();
+
+		const hasRadio = Array.from(boardSizeRadios).some((r) => r.checked);
+		const hasCustom = customSizeInput.value.trim() !== "";
+
+		if (!hasRadio && !hasCustom) {
+			customSizeInput.focus();
+			return;
+		}
+
 		modal.close();
 	}
 
