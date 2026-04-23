@@ -272,6 +272,11 @@ function ModalController() {
 			return;
 		}
 
+		if (hasCustom && Number(customSizeInput.value) < 7) {
+			customSizeInput.focus();
+			return;
+		}
+
 		modal.close();
 	}
 
