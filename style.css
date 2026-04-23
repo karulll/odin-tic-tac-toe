@@ -20,8 +20,7 @@ body {
 	border: 3px solid black;
 	background: white;
 	box-shadow: 8px 8px 0px black;
-	margin-bottom: 1rem;
-	margin-top: 1rem;
+	margin-block: 1rem;
 }
 
 .cmd-bar {
@@ -57,7 +56,7 @@ body {
 	color: white;
 	background-color: black;
 	cursor: pointer;
-	border: 0;
+	border: none;
 	font-size: 1.25rem;
 	display: flex;
 	align-items: center;
@@ -125,7 +124,8 @@ body {
 	margin: 0;
 }
 
-#restart-btn {
+#restart-btn,
+#start-game-btn {
 	background: white;
 	color: black;
 	border: 3px solid black;
@@ -136,7 +136,8 @@ body {
 	box-shadow: 3px 3px 0px black;
 }
 
-#restart-btn:hover {
+#restart-btn:hover,
+#start-game-btn:hover {
 	background: black;
 	color: white;
 	box-shadow: 0px 0px 0px black;
@@ -159,4 +160,115 @@ footer a:hover {
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
 	text-underline-offset: 5px;
+}
+
+#game-modal {
+	padding: 0;
+	box-shadow: 8px 8px 0px black;
+}
+
+#modal-bar {
+	padding-block: 1rem;
+}
+
+.modal::backdrop {
+	background: white;
+}
+
+h3 {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.settings-group {
+	padding-inline: 1.5rem;
+	padding-block: 0.5rem;
+	border-top: 3px solid black;
+}
+
+.modal-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-block: 1.25rem;
+	padding-inline: 1.25rem;
+	border-top: 3px solid black;
+	margin-top: 1rem;
+}
+
+#start-game-btn {
+	min-width: 100%;
+}
+
+.button-group {
+	display: flex;
+	gap: 1rem;
+	margin-block: 1rem;
+}
+
+.button-group label {
+	flex: 1;
+	display: flex;
+}
+
+.button-group input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.button-group label span {
+	background: white;
+	color: black;
+	border: 3px solid black;
+	padding: 0.625rem 1.25rem;
+	font-size: 1.1rem;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 3px 3px 0px black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	text-align: center;
+	user-select: none;
+}
+
+.button-group label:hover input:not(:checked) ~ span {
+	background: black;
+	color: white;
+}
+
+.button-group input:checked ~ span {
+	background: black;
+	color: white;
+	box-shadow: 0px 0px 0px black;
+	transform: translate(3px, 3px);
+}
+
+.custom-size-group {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
+#custom-size {
+	font-size: 1.1rem;
+	font-weight: bold;
+	color: black;
+	border: 3px solid black;
+	padding: 0.5rem;
+	box-shadow: 3px 3px 0px black;
+	width: 100px;
+	outline: none;
+	transition: all 0.1s ease;
+}
+
+#custom-size:focus {
+	box-shadow: 0px 0px 0px black;
+	transform: translate(3px, 3px);
 }

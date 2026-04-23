@@ -1,8 +1,8 @@
 // construction of everything related to the base board
 function GameBoard() {
 	// define the rows and cols and the 2d board grid
-	const rows = 4;
-	const cols = 4;
+	const rows = 3;
+	const cols = 3;
 	const board = [];
 
 	// create the board, array of objects
@@ -242,5 +242,8 @@ function ScreenController() {
 	initializeBoard();
 	updateScreen();
 }
+const modal = document.querySelector("#game-modal");
+const startBtn = document.querySelector("#start-game-btn");
 
+modal.showModal();
 ScreenController();

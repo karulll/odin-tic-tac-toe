@@ -10,13 +10,14 @@ simple tic tac toe game for odin project with a retro? cmd window aesthetic.
 
 ### stuff to learn for better programming
 
-- stop destroying the dom. right now, every time a player clicks a square, i completely wipe the div and recreate all 9 buttons from scratch. works for this, but know i should probably build the buttons once and just update their text layer.
+~~- stop destroying the dom. right now, every time a player clicks a square, i completely wipe the div and recreate all 9 buttons from scratch. works for this, but know i should probably build the buttons once and just update their text layer.~~
+
 - dont rely on other people's source code so much when trying to learn
 
 ### to do's to make sure i actually learned something
 
 - [x] **1. state management**
-  - [x] add a proper `let isGameOver = false` variable inside `GameController` to not use UI text for logic
+      ~~- [x] add a proper `let isGameOver = false` variable inside `GameController` to not use UI text for logic
   - [x] update `playRound` to flip `isGameOver = true` when there's a win or tie, and flip it back to `false` in `restartGame`
   - [x] make `playRound` return if `isGameOver` is true
 

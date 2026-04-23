@@ -34,6 +34,76 @@
 				<button id="restart-btn">Restart Game</button>
 			</div>
 		</main>
+
+		<dialog id="game-modal" class="modal">
+			<div tabindex="-1" autofocus></div>
+			<div id="modal-bar" class="cmd-bar">
+				<div class="title">
+					<img src="tic-tac-toe.svg" alt="Settings" class="cmd-icon" />
+					<span>settings.exe</span>
+				</div>
+				<div class="cmd-controls">
+					<button id="minimize">_</button>
+					<button id="maximize">□</button>
+					<button id="close">×</button>
+				</div>
+			</div>
+
+			<div class="modal-content">
+				<form id="settings-form">
+					<div class="settings-group">
+						<div class="button-group">
+							<label>
+								<input type="radio" name="mode" value="pvp" checked />
+								<span>Player vs Player</span>
+							</label>
+							<label>
+								<input type="radio" name="mode" value="pvai" />
+								<span>Player vs AI</span>
+							</label>
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<div class="button-group">
+							<label>
+								<input type="radio" name="board-size" value="3" checked />
+								<span>3x3</span>
+							</label>
+							<label>
+								<input type="radio" name="board-size" value="4" />
+								<span>4x4</span>
+							</label>
+							<label>
+								<input type="radio" name="board-size" value="5" />
+								<span>5x5</span>
+							</label>
+							<label>
+								<input type="radio" name="board-size" value="6" />
+								<span>6x6</span>
+							</label>
+						</div>
+
+						<div class="custom-size-group">
+							<label for="custom-size">Custom Size: </label>
+							<input
+								type="number"
+								id="custom-size"
+								name="custom-size"
+								min="7"
+								max="20"
+								placeholder="min:7"
+							/>
+						</div>
+					</div>
+
+					<div class="modal-actions">
+						<button type="submit" id="start-game-btn">Start Game</button>
+					</div>
+				</form>
+			</div>
+		</dialog>
+
 		<footer>
 			<p>
 				<a
