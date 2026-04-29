@@ -1,9 +1,9 @@
 // construction of everything related to the base board
-function GameBoard() {
+function GameBoard(size) {
 	// define the rows and cols and the 2d board grid
-	const rows = 3;
-	const cols = 3;
 	const board = [];
+	const rows = size;
+	const cols = size;
 
 	// create the board, array of objects
 	for (let i = 0; i < rows; i++) {
@@ -14,8 +14,6 @@ function GameBoard() {
 	}
 
 	const getBoard = () => board;
-	const getBoardRows = () => rows;
-	const getBoardCols = () => cols;
 
 	// method method add a players value to a cell, check if that cell is available first
 	const setPlayerValue = (row, column, player) => {
@@ -42,7 +40,7 @@ function GameBoard() {
 		}
 	};
 
-	return { getBoard, setPlayerValue, resetBoard, getBoardCols, getBoardRows };
+	return { getBoard, setPlayerValue, resetBoard };
 }
 
 // constructor for the individual cells
@@ -62,7 +60,11 @@ function Cell() {
 }
 
 // control the flow of the game
-function GameController(playerOne = "Player X", playerTwo = "Player O") {
+function GameController(
+	config,
+	playerOne = "Player X",
+	playerTwo = "Player O",
+) {
 	const players = [
 		{
 			name: playerOne,
@@ -76,9 +78,10 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		},
 	];
 
-	const board = GameBoard();
-	const totalRows = board.getBoardRows();
-	const totalCols = board.getBoardCols();
+	const board = GameBoard(config.size);
+	const totalRows = config.size;
+	const totalCols = config.size;
+	const gameMode = config.mode;
 
 	let activePlayer = players[0];
 	let isGameOver = false;
@@ -158,20 +161,18 @@ function GameController(playerOne = "Player X", playerTwo = "Player O") {
 		restartGame,
 		getIsGameOver,
 		getIsGameTie,
-		totalRows: board.getBoardRows,
-		totalCols: board.getBoardCols,
 	};
 }
 
 // renders and updates the game into the dom and accept inputs
-function ScreenController() {
-	const game = GameController();
+function ScreenController(config) {
+	const game = GameController(config);
 	const playerTurnText = document.querySelector(".status");
 	const boardDiv = document.querySelector(".board");
 	const restartBtn = document.querySelector("#restart-btn");
 	const board = game.getBoard();
-	const totalRows = game.totalRows();
-	const totalCols = game.totalCols();
+	const totalRows = config.size;
+	const totalCols = config.size;
 
 	// renders the base grid of buttons
 	function initializeBoard() {
@@ -277,11 +278,24 @@ function ModalController() {
 			return;
 		}
 
+		const mode = document.querySelector('input[name="mode"]:checked').value;
+		const size = hasCustom
+			? Number(customSizeInput.value)
+			: Number(
+					document.querySelector('input[name="board-size"]:checked').value,
+				);
+
+		const config = {
+			size: size,
+			mode: mode,
+		};
+
 		modal.close();
+		ScreenController(config);
+		console.log(config.size);
+		console.log(config.mode);
 	}
 
 	startBtn.addEventListener("click", clickHandlerStart);
 }
-
 ModalController();
-ScreenController();
